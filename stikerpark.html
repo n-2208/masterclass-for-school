@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="ru">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Мастер-класс: Создай стикер за 5 минут!</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 20px;
+      color: white;
+    }
+
+    .container {
+      max-width: 100%;
+      margin: 0 auto;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    h1 {
+      font-size: 1.8rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+    }
+
+    .timer {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 10px;
+      border-radius: 20px;
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+
+    .workspace {
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(10px);
+      border-radius: 20px;
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    .sticker-preview {
+      width: 200px;
+      height: 200px;
+      background: #FFD700;
+      border-radius: 20px;
+      margin: 0 auto 20px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+      border: 3px dashed #FF6B6B;
+    }
+
+    .sticker-emoji {
+      font-size: 4rem;
+      margin-bottom: 10px;
+    }
+
+    .sticker-text {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #333;
+      text-align: center;
+      padding: 0 10px;
+    }
+
+    .controls {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 15px;
+    }
+
+    .control-group {
+      background: rgba(255, 255, 255, 0.2);
+      padding: 15px;
+      border-radius: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    input,
+    select {
+      width: 100%;
+      padding: 12px;
+      border: none;
+      border-radius: 10px;
+      font-size: 1rem;
+      background: white;
+    }
+
+    .color-palette {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .color-option {
+      width: 100%;
+      height: 40px;
+      border-radius: 8px;
+      border: 2px solid transparent;
+      cursor: pointer;
+    }
+
+    .color-option.active {
+      border-color: white;
+      transform: scale(1.1);
+    }
+
+    .action-buttons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 20px;
+      }
+        
+        button {
+            padding: 15px;
+            border: none;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: #FF6B6B;
+            color: white;
+        }
+        
+        .btn-secondary {
+            background: rgba(255,255,255,0.3);
+            color: white;
+        }
+        
+        button:active {
+            transform: scale(0.95);
+        }
+        
+        .instructions {
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            font-size: 0.9rem;
+        }
+        
+        .step {
+            display: flex;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+        
+        .step-number {
+            background: #FF6B6B;
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            font-size: 0.8rem;
+            font-weight: bold;
+        }
+        
+        @media (max-width: 480px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+    </head>
+    
+    <body>
+      <div class="container">
+        <div class="header">
+          <h1>🎨 Создай свой стикер!</h1>
+          <p class="subtitle">Мастер-класс по веб-разработке за 5 минут</p>
+        </div>
+    
+        <div class="timer">⏱️ Время: <span id="time">5:00</span></div>
+    
+        <div class="workspace">
+          <div class="sticker-preview" id="sticker">
+            <div class="sticker-emoji" id="stickerEmoji">😊</div>
+            <div class="sticker-text" id="stickerText">Привет!</div>
+          </div>
+    
+          <div class="controls">
+            <div class="control-group">
+              <label for="emojiSelect">Выбери эмодзи:</label>
+              <select id="emojiSelect">
+                <option value="😊">😊 Радость</option>
+                <option value="😂">😂 Смех</option>
+                <option value="🤩">🤩 Восторг</option>
+                <option value="😎">😎 Круто</option>
+                <option value="🤗">🤗 Обнимашки</option>
+                <option value="🎉">🎉 Праздник</option>
+                <option value="❤️">❤️ Любовь</option>
+                <option value="🔥">🔥 Огонь</option>
+              </select>
+            </div>
+    
+            <div class="control-group">
+              <label for="textInput">Твой текст:</label>
+              <input type="text" id="textInput" value="Привет!" maxlength="15">
+            </div>
+          </div>
+    
+          <div class="control-group">
+            <label>Цвет стикера:</label>
+            <div class="color-palette">
+              <div class="color-option active" style="background:#FFD700;" data-color="#FFD700"></div>
+              <div class="color-option" style="background:#FF6B6B;" data-color="#FF6B6B"></div>
+              <div class="color-option" style="background:#4ECDC4;" data-color="#4ECDC4"></div>
+              <div class="color-option" style="background:#45B7D1;" data-color="#45B7D1"></div>
+              <div class="color-option" style="background:#96CEB4;" data-color="#96CEB4"></div>
+              <div class="color-option" style="background:#FFEAA7;" data-color="#FFEAA7"></div>
+              <div class="color-option" style="background:#DDA0DD;" data-color="#DDA0DD"></div>
+              <div class="color-option" style="background:#98D8C8;" data-color="#98D8C8"></div>
+              </div>
+              </div>
+              
+              <div class="action-buttons">
+                <button class="btn-primary" onclick="saveSticker()">💾 Сохранить стикер</button>
+                <button class="btn-secondary" onclick="shareSticker()">📤 Поделиться</button>
+              </div>
+              </div>
+              
+              <div class="instructions">
+                <div class="step">
+                  <div class="step-number">1</div>
+                  <div>Выбери эмодзи и напиши текст</div>
+                </div>
+                <div class="step">
+                  <div class="step-number">2</div>
+                  <div>Выбери цвет для своего стикера</div>
+                </div>
+                <div class="step">
+                  <div class="step-number">3</div>
+                  <div>Сохрани или поделись с друзьями!</div>
+                </div>
+              </div>
+              </div>
+              
+              <script>
+                // Элементы DOM
+                const emojiSelect = document.getElementById('emojiSelect');
+                const textInput = document.getElementById('textInput');
+                const stickerEmoji = document.getElementById('stickerEmoji');
+                const stickerText = document.getElementById('stickerText');
+                const sticker = document.getElementById('sticker');
+                const colorOptions = document.querySelectorAll('.color-option');
+                const timeDisplay = document.getElementById('time');
+
+                // Таймер
+                let timeLeft = 300; // 5 минут в секундах
+
+                function updateTimer() {
+                  const minutes = Math.floor(timeLeft / 60);
+                  const seconds = timeLeft % 60;
+                  timeDisplay.textContent = `${minutes}: ${seconds.toString().padStart(2, '0')}`;
+
+                  if (timeLeft > 0) {
+                    timeLeft--;
+                    setTimeout(updateTimer, 1000);
+                  } else {
+                    timeDisplay.textContent = "Время вышло!";
+                    timeDisplay.style.color = "#FF6B6B";
+                  }
+                }
+
+                // Обработчики событий
+                emojiSelect.addEventListener('change', function () {
+                  stickerEmoji.textContent = this.value;
+                });
+
+                textInput.addEventListener('input', function () {
+                  stickerText.textContent = this.value || 'Привет!';
+                });
+
+                colorOptions.forEach(option => {
+                  option.addEventListener('click', function () {
+                    colorOptions.forEach(opt => opt.classList.remove('active'));
+                    this.classList.add('active');
+                    sticker.style.background = this.dataset.color;
+                  });
+                });
+
+                // Функции действий
+                function saveSticker() {
+                  alert('🎉 Стикер сохранен! Теперь ты можешь отправить его друзьям!');
+                  // В реальном приложении здесь была бы логика сохранения изображения
+                }
+
+                function shareSticker() {
+                  if (navigator.share) {
+                    navigator.share({
+                      title: 'Мой крутой стикер!',
+                      text: 'Посмотри, какой стикер я создал на мастер-классе!',
+                      url: window.location.href
+                    });
+                  } else {
+                    alert('📤 Скопируй ссылку и отправь друзьям: ' + window.location.href);
+                  }
+                }
+
+                // Запуск таймера при загрузке
+                updateTimer();
+
+                // Вибрация при взаимодействии (если поддерживается)
+                function vibrate() {
+                  if (navigator.vibrate) {
+                    navigator.vibrate(50);
+                  }
+                }
+
+                // Добавляем вибрацию к кнопкам
+                document.querySelectorAll('button').forEach(button => {
+                  button.addEventListener('touchstart', vibrate);
+                });
+              </script>
+              </body>
+              
+              </html>
+              
